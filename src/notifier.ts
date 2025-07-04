@@ -14,14 +14,26 @@ const domain = process.env.MAILGUN_DOMAIN || "";
 
 export async function sendMail(subject: string, htmlContent: string) {
   try {
+    // Read MAILGUN_TO, split by comma, and trim spaces
+    const recipients = (process.env.MAILGUN_TO || "")
+      .split(',')
+      .map(email => email.trim())
+      .filter(email => email.length > 0);
+
+    if (recipients.length === 0) {
+      console.warn("No recipients specified in MAILGUN_TO");
+      return;
+    }
+
     const data = await mg.messages.create(domain, {
       from: `Glasfaser Watcher <postmaster@${domain}>`,
-      to: [process.env.MAILGUN_TO || ""],
-      subject: subject,
+      to: recipients, // array of emails
+      subject,
       html: htmlContent,
     });
-    console.log("Mail gesendet:", data);
+
+    console.log("Mail sent:", data);
   } catch (error) {
-    console.error("Fehler beim Mail senden:", error);
+    console.error("Error sending mail:", error);
   }
 }
