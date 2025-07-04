@@ -15,7 +15,7 @@ const domain = process.env.MAILGUN_DOMAIN || "";
 export async function sendMail(subject: string, htmlContent: string) {
   try {
     const data = await mg.messages.create(domain, {
-      from: `Mailgun Sandbox <postmaster@${domain}>`,
+      from: `Glasfaser Watcher <postmaster@${domain}>`,
       to: [process.env.MAILGUN_TO || ""],
       subject: subject,
       html: htmlContent,
@@ -25,11 +25,3 @@ export async function sendMail(subject: string, htmlContent: string) {
     console.error("Fehler beim Mail senden:", error);
   }
 }
-
-// Beispiel: Funktion aufrufen
-(async () => {
-  await sendMail(
-    "Test Titel",
-    "<p>Das ist ein Test-Inhalt als HTML.</p>"
-  );
-})();

@@ -8,3 +8,5 @@ async function main() {
     .then(() => console.log("Mail gesendet"))
     .catch((err) => console.log("Fehler beim Senden der Mail:", err));
 }
+
+main();
