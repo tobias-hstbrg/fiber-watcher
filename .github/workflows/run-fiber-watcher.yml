@@ -21,8 +21,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Remove old cache (optional)
-        run: rm -f ./data/cache.json
+      #- name: Remove old cache (optional)
+        #run: rm -f ./data/cache.json
 
       - name: Run script with ts-node
         run: npx ts-node src/main.ts
