@@ -1,31 +1,34 @@
-name: Fiber Watcher Cron Job
+name: Fiber Watcher
 
 on:
   schedule:
-    - cron: '0 9,14 * * *' # runs every day at 11:00 and 16:00 Berlin
-  workflow_dispatch:       # allows manual runs from GitHub UI
+    - cron: '0 7,17 * * *' # Runs at 07:00 and 17:00 UTC (adjust for Berlin if needed)
+  workflow_dispatch: # allows manual run
 
 jobs:
-  build-and-run:
+  run-script:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout repo
         uses: actions/checkout@v3
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20'
+          node-version: 18
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
-      - name: Run script
-        run: |
-          rm -f ./data/cache.json  # Optional: remove cache
-          npx ts-node src/main.ts
+      - name: Remove old cache (optional)
+        run: rm -f ./data/cache.json
+
+      - name: Run script with ts-node
+        run: npx ts-node src/main.ts
         env:
+          EMAIL_HOST: ${{ secrets.EMAIL_HOST }}
+          EMAIL_PORT: ${{ secrets.EMAIL_PORT }}
           EMAIL_USER: ${{ secrets.EMAIL_USER }}
           EMAIL_PASS: ${{ secrets.EMAIL_PASS }}
           EMAIL_TO: ${{ secrets.EMAIL_TO }}
