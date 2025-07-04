@@ -25,6 +25,7 @@ export async function sendMail(subject: string, htmlContent: string) {
       return;
     }
 
+    console.log("Sending mail to:", recipients);
     const data = await mg.messages.create(domain, {
       from: `Glasfaser Watcher <postmaster@${domain}>`,
       to: recipients, // array of emails
