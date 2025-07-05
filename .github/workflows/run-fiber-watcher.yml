@@ -13,6 +13,14 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
+      - name: Restore cache
+        uses: actions/cache@v4
+        with:
+          path: data/cache.json
+          key: ${{ runner.os }}-fiber-cache
+          restore-keys: |
+            ${{ runner.os }}-fiber-cache
+
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
@@ -31,3 +39,9 @@ jobs:
           MAILGUN_DOMAIN: ${{ secrets.MAILGUN_DOMAIN }}
           MAILGUN_FROM: ${{ secrets.MAILGUN_SENDER }}
           MAILGUN_TO: ${{ secrets.MAILGUN_TO }}
+
+      - name: Save cache
+        uses: actions/cache@v4
+        with:
+          path: data/cache.json
+          key: ${{ runner.os }}-fiber-cache-${{ github.run_id }}
